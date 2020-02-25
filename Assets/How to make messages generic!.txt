@@ -1,0 +1,1 @@
+https://codereview.stackexchange.com/questions/119192/message-bus-in-c
