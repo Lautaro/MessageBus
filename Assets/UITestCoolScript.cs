@@ -1,5 +1,4 @@
-﻿using Assets;
-using Assets.MessageBus;
+﻿using NewsBoardMessaging;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,15 +9,15 @@ public class UITestCoolScript : MonoBehaviour
 {
     void Start()
     {
-        MessageBus.SubscribeWithId(MessageTopics.SomethingHappened_Vector2, new UnityAction<MessageCallback>(MyCallback), this.GetInstanceID().ToString());
+        NewsBoard.SubscribeWithId( NewsTopics.SomethingHappened_Vector2, new UnityAction<NewsEvent> (MyCallback), this.GetInstanceID().ToString());
 
     }
 
-    void MyCallback(MessageCallback myMessage)
+    void MyCallback( NewsEvent newsEvent )
     {
         Text myText = GetComponent<Text>();
 
-        myText.text = myMessage.ToString();
+        myText.text = newsEvent.ToString();
 
     }
     // Update is called once per frame

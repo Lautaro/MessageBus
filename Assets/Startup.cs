@@ -1,5 +1,4 @@
-﻿using Assets;
-using Assets.MessageBus;
+﻿using NewsBoardMessaging;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,14 +9,15 @@ public class Startup : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {   
-        MessageBus.Subscribe(MessageTopics.SomethingHappened_Vector2, new UnityAction<MessageCallback>(MyCallback));
+        
+        NewsBoard.Subscribe( NewsTopics.SomethingHappened_Vector2, new UnityAction<NewsEvent> (NewsSubscriber));
         
     }
 
-    void MyCallback(MessageCallback myMessage)
+    void NewsSubscriber( NewsEvent newsEvent )
     {
-        print(myMessage.MessageTopic);
-        print(myMessage.Open<Vector2>());
+        print(newsEvent.Topic);
+        print(newsEvent.Open<Vector2>());
     
     }
 
@@ -26,17 +26,17 @@ public class Startup : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            MessageBus.PostMessage(MessageTopics.SomethingHappened_Vector2, new Vector2(99, 99));
+            NewsBoard.PublishNews( NewsTopics.SomethingHappened_Vector2, new Vector2(99, 99));
         }
 
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            MessageBus.UnSubscribe(MessageTopics.SomethingHappened_Vector2, MyCallback);
+            NewsBoard.UnSubscribe( NewsTopics.SomethingHappened_Vector2, NewsSubscriber);
         }
 
         if (Input.GetKeyDown(KeyCode.KeypadEnter))
         {
-            MessageBus.Subscribe(MessageTopics.SomethingHappened_Vector2, new UnityAction<MessageCallback>(MyCallback));
+            NewsBoard.Subscribe( NewsTopics.SomethingHappened_Vector2, new UnityAction<NewsEvent> ( NewsSubscriber ) );
         }
     }
 }
